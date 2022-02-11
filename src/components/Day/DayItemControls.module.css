@@ -1,0 +1,14 @@
+.controls {
+  text-align: start;
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.controls p {
+  margin-left: 0.5rem;
+}
+
+.control {
+  margin: 0.5rem 0.5rem 0.5rem 0.2rem;
+}

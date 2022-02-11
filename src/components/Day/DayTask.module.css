@@ -1,0 +1,40 @@
+.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background-color: rgb(233, 238, 202);
+  margin: 0 0.3rem;
+  padding: 0.2rem;
+  border-radius: 5px;
+  max-width: 100%;
+}
+
+.title {
+  flex-basis: 180px;
+}
+
+.task h3 {
+  margin: 0 auto 0 0.2rem;
+  font-weight: 450;
+  color: black;
+  overflow-wrap: anywhere;
+  text-align: start;
+}
+
+.task p {
+  margin-right: 1rem;
+}
+
+.task button {
+  margin-right: 0.5rem;
+}
+
+.task label {
+  font-size: 0.8rem;
+}
+
+.controls {
+  display: flex;
+  flex-shrink: 1;
+}

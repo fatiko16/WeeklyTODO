@@ -1,0 +1,30 @@
+.single {
+  text-align: center;
+  box-shadow: 3px 3px 5px rgb(49, 49, 49);
+  border-radius: 5px;
+  background-color: rgba(175, 175, 175, 0.8);
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  margin: 0 auto;
+  gap: 0.5rem;
+}
+
+.single > * {
+  border-bottom: 0.5px solid rgb(255, 228, 196, 0.5);
+  /* width: 100%; */
+}
+
+.single h1 {
+  margin: 0;
+  padding: 0.5rem;
+  font-weight: 550;
+  color: var(--main-header-color);
+}
+
+.control {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}

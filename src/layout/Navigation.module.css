@@ -1,0 +1,30 @@
+.navigation {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.logo {
+  align-self: flex-start;
+  margin-left: 1rem;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  list-style: none;
+}
+
+.links li {
+  margin-right: 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--main-header-color);
+  transition: color;
+  transition-duration: 500ms;
+}
+
+.links li:hover {
+  color: azure;
+}

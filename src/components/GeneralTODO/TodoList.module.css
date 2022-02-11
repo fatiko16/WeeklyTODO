@@ -1,0 +1,17 @@
+.list {
+  list-style: none;
+  border: 1px solid wheat;
+  width: 28%;
+  padding: 0;
+  border-radius: 5px;
+  margin: 0;
+  background-color: rgba(175, 175, 175, 0.8);
+}
+
+.list h2 {
+  border-bottom: 1px solid wheat;
+  text-align: center;
+  padding: 0.75rem;
+  margin: 0;
+  color: var(--main-header-color);
+}

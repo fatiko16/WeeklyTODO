@@ -1,0 +1,10 @@
+.all__lists {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.all__lists button {
+  height: 50%;
+}
