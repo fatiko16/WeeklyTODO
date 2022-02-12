@@ -38,7 +38,7 @@ export const fetchTasks = () => {
       const tasks = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       dispatch(taskActions.replaceTasks(tasks));
     } catch (error) {
-      console.log("Something went wrong while getting your tasks.");
+      console.log("Something went wrong while getting your todos.");
     }
   };
 };

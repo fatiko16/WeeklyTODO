@@ -14,7 +14,7 @@ function TodoList(props) {
       <TodoItem taskText={"Finish Authentication part from Udemy"} />
       <TodoItem taskText={"Start Implementing Authentication"} />
       <TodoItem taskText={"Check everything and redeploy the app"} />
-      <TodoItemControls />
+      <TodoItemControls title={props.title} />
     </ul>
   );
 }
