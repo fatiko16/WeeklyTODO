@@ -5,9 +5,17 @@
   /* padding: 0.2rem; */
   border-radius: 5px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .item p {
   margin: 0;
   padding: 0.5rem 0;
+}
+
+.btn {
+  width: 9%;
+  padding: 0.3rem 0;
 }

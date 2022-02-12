@@ -6,7 +6,6 @@ import Button from "../../UI/Button";
 import { Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchTodos } from "../../store/todo-actions";
-import Transition from "react-transition-group/Transition";
 import { useSelector } from "react-redux";
 import { todoActions } from "../../store/todo-slice";
 
@@ -22,7 +21,7 @@ function AllTodos() {
   const dispatch = useDispatch();
   const allTodos = useSelector((state) => state.todo.todos);
   const updated = useSelector((state) => state.todo.updated);
-  const [showTransition, setShowTransition] = useState(false);
+  const titles = getAllTitles(allTodos);
 
   useEffect(() => {
     dispatch(fetchTodos());
@@ -33,27 +32,11 @@ function AllTodos() {
       <Route path="/todo/add">
         <AddTodoTask />
       </Route>
-      <Button onClick={() => setShowTransition(!showTransition)}>Toggle</Button>
-      <Transition in={showTransition} timeout={1000} mountOnEnter unmountOnExit>
-        {(state) => (
-          <div
-            style={{
-              backgroundColor: "red",
-              width: 100,
-              height: 100,
-              margin: "auto",
-              transition: "opacity 1s ease-out",
-              opacity: state === "exiting" ? 0 : 1,
-            }}
-          ></div>
-        )}
-      </Transition>
       <div className={classes.all__lists}>
-        {allTodos && allTodos.length > 0 && allTodos.map((todo) => {})}
-        <TodoList title={"Weekly TO DO"} />
-        <TodoList title={"CSS"} />
-        <TodoList title={"Algorithms"} />
-        <TodoList title={"Daily Life"} />
+        {titles.map((title) => {
+          const titleTodos = allTodos.filter((todo) => todo.title === title);
+          return <TodoList title={title} titleTodos={titleTodos} key={title} />;
+        })}
         <Button title={"Create New List"} />
       </div>
     </React.Fragment>

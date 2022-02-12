@@ -6,6 +6,9 @@ function TodoList(props) {
   return (
     <ul className={classes.list}>
       <h2>{props.title}</h2>
+      {props.titleTodos.map((todo) => {
+        return <TodoItem taskText={todo.description} key={todo.id} />;
+      })}
       <TodoItem
         taskText={
           "Prepare the Kanban task in a way that header an task text works"

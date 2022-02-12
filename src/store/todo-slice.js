@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { useMemo } from "react";
 
 const todoSlice = createSlice({
   name: "todo",
