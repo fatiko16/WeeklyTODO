@@ -1,15 +1,22 @@
 import React from "react";
-import classes from "./TodoItemControls.module.css";
-import Button from "../../UI/Button";
 import { useHistory } from "react-router-dom";
 import { todoActions } from "../../store/todo-slice";
 import { useDispatch } from "react-redux";
+import { deleteTodoList } from "../../store/todo-actions";
+import classes from "./TodoItemControls.module.css";
+import Button from "../../UI/Button";
+
 function TodoItemControls(props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const openNewTodoWindowHandler = () => {
     dispatch(todoActions.chooseTodoList(props.title));
-    history.push("/todo/add");
+    history.push("/todo/add-todo");
+  };
+
+  const deleteListHandler = () => {
+    dispatch(deleteTodoList(props.titleID));
+    dispatch(todoActions.todosUpdated());
   };
   return (
     <div className={classes.controls}>
@@ -18,7 +25,11 @@ function TodoItemControls(props) {
         className={classes.control}
         onClick={openNewTodoWindowHandler}
       />
-      {/* <Button title={"Show Item"} className={classes.control} /> */}
+      <Button
+        title={"Delete List"}
+        className={classes.control}
+        onClick={deleteListHandler}
+      />
     </div>
   );
 }

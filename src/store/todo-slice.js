@@ -5,11 +5,15 @@ const todoSlice = createSlice({
   initialState: {
     todos: [],
     title: "",
+    allTitles: [],
     updated: false,
   },
   reducers: {
     replaceTodos(state, action) {
       state.todos = action.payload;
+    },
+    replaceTodoTitles(state, action) {
+      state.allTitles = action.payload;
     },
     chooseTodoList(state, action) {
       console.log(action);

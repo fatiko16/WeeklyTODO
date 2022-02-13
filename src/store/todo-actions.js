@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import { todoActions } from "./todo-slice";
 const todoCollectionRef = collection(db, "todos");
+const todoTitleCollectionRef = collection(db, "titles");
 
 export const createTodo = (title, description) => {
   return async () => {
@@ -45,6 +46,47 @@ export const deleteTodo = (id) => {
     } catch (error) {
       console.log(error);
       console.log("Something went wrong while deleting the todo");
+    }
+  };
+};
+
+export const addTodoList = (title) => {
+  return async () => {
+    try {
+      await addDoc(todoTitleCollectionRef, {
+        title: title,
+      });
+    } catch (error) {
+      console.log(error);
+      console.log("Something went wrong while adding To do list");
+    }
+  };
+};
+
+export const deleteTodoList = (id) => {
+  return async () => {
+    try {
+      const todoList = doc(db, "titles", id);
+      await deleteDoc(todoList);
+    } catch (error) {
+      console.log(error);
+      console.log("Something went wrong while deleting a to do list");
+    }
+  };
+};
+
+export const fetchTitles = () => {
+  return async (dispatch) => {
+    try {
+      const data = await getDocs(todoTitleCollectionRef);
+      const todoTitles = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      dispatch(todoActions.replaceTodoTitles(todoTitles));
+    } catch (error) {
+      console.log(error);
+      console.log("Something went wrong while fetching to do list titles");
     }
   };
 };
