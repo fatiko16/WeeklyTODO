@@ -7,16 +7,10 @@ function TodoList(props) {
     <ul className={classes.list}>
       <h2>{props.title}</h2>
       {props.titleTodos.map((todo) => {
-        return <TodoItem taskText={todo.description} key={todo.id} />;
+        return (
+          <TodoItem taskText={todo.description} key={todo.id} id={todo.id} />
+        );
       })}
-      <TodoItem
-        taskText={
-          "Prepare the Kanban task in a way that header an task text works"
-        }
-      />
-      <TodoItem taskText={"Finish Authentication part from Udemy"} />
-      <TodoItem taskText={"Start Implementing Authentication"} />
-      <TodoItem taskText={"Check everything and redeploy the app"} />
       <TodoItemControls title={props.title} />
     </ul>
   );

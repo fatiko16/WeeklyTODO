@@ -19,7 +19,7 @@ export const createTodo = (title, description) => {
       });
     } catch (error) {
       console.log(error);
-      console.log("Something went wrong while creating an task");
+      console.log("Something went wrong while creating an todo");
     }
   };
 };
@@ -32,6 +32,19 @@ export const fetchTodos = () => {
       dispatch(todoActions.replaceTodos(todos));
     } catch (error) {
       console.log("Something went wrong while getting your todos.");
+    }
+  };
+};
+
+export const deleteTodo = (id) => {
+  return async (dispatch) => {
+    try {
+      const todoDoc = doc(db, "todos", id);
+      await deleteDoc(todoDoc);
+      dispatch(todoActions.todosUpdated);
+    } catch (error) {
+      console.log(error);
+      console.log("Something went wrong while deleting the todo");
     }
   };
 };
