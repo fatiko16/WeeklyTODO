@@ -25,7 +25,6 @@ function AllTodos() {
   const allTodos = useSelector((state) => state.todo.todos);
   const allTitles = useSelector((state) => state.todo.allTitles);
   const updated = useSelector((state) => state.todo.updated);
-  const titles = getAllTitles(allTodos);
 
   useEffect(() => {
     dispatch(fetchTodos());
@@ -59,6 +58,7 @@ function AllTodos() {
         <Button
           title={"Create New List"}
           onClick={() => history.push("/todo/add-list")}
+          className={classes.btn}
         />
       </div>
     </React.Fragment>

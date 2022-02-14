@@ -1,8 +1,12 @@
 .container {
-  width: 28%;
+  min-width: 250px;
   border: 1px solid wheat;
   border-radius: 5px;
   background-color: rgba(175, 175, 175, 0.8);
+  flex: 0.02 0 48%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .list {
   list-style: none;
