@@ -1,7 +1,7 @@
 import React from "react";
 import DayTask from "./DayTask";
 import classes from "./DayItem.module.css";
-import Controls from "./DayItemControls";
+import DayItemControls from "./DayItemControls";
 
 function DayItem(props) {
   return (
@@ -15,7 +15,7 @@ function DayItem(props) {
           />
         );
       })}
-      <Controls day={props.day} />
+      <DayItemControls day={props.day} />
     </div>
   );
 }

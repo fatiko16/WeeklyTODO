@@ -3,6 +3,7 @@ import classes from "./DayTaskForm.module.css";
 import Button from "../../UI/Button";
 import { useDispatch } from "react-redux";
 import { uiActions } from "../../store/ui-slice";
+
 function DayTaskForm(props) {
   const dispatch = useDispatch();
   const titleRef = useRef();
@@ -27,7 +28,7 @@ function DayTaskForm(props) {
         />
       </label>
       <label htmlFor="duration">
-        Duration
+        Duration (In Minutes)
         <input
           type="number"
           id="duration"
