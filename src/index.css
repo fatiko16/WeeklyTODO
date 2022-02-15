@@ -13,6 +13,10 @@ code {
     monospace;
 }
 
+.error {
+  color: red;
+}
+
 :root {
   --bg-color: #4abdac;
   --button-color: #f7b733;

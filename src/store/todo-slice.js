@@ -16,7 +16,6 @@ const todoSlice = createSlice({
       state.allTitles = action.payload;
     },
     chooseTodoList(state, action) {
-      console.log(action);
       state.title = action.payload;
     },
     todosUpdated(state) {

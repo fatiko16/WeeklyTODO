@@ -18,7 +18,6 @@ function TodoItemControls(props) {
   const history = useHistory();
   const allTodos = useSelector((state) => state.todo.todos);
   const allTitleTodos = getAllTitleTodos(props.title, allTodos);
-  console.log(allTodos);
   const openNewTodoWindowHandler = () => {
     dispatch(todoActions.chooseTodoList(props.title));
     history.push("/todo/add-todo");

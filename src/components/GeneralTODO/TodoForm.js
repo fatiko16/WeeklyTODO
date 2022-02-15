@@ -1,22 +1,52 @@
 import React, { useRef } from "react";
+import { useState } from "react";
 import Button from "../../UI/Button";
 import classes from "./TodoForm.module.css";
 
 function TodoForm(props) {
   const descriptionRef = useRef();
 
+  const [descriptionIsNotValid, setDescriptionIsNotValid] = useState(false);
+  const [descriptionText, setDescriptionText] = useState("");
+  const [isDescriptionTouched, setIsDescriptionTouched] = useState(false);
+  const isDescriptionValid = descriptionText.length > 0;
+  const descriptionChangedHandler = () => {
+    setDescriptionText(descriptionRef.current.value);
+  };
+  const descriptionTouchedHandler = () => {
+    setIsDescriptionTouched(true);
+  };
+
   const submitHandler = (event) => {
     event.preventDefault();
-
-    props.onSubmit(descriptionRef.current.value);
+    const descriptionValue = descriptionRef.current.value;
+    if (descriptionValue.length === 0) {
+      setDescriptionIsNotValid(true);
+      return;
+    }
+    console.log(descriptionValue);
+    props.onSubmit(descriptionValue);
   };
+
+  const descriptionClass =
+    !isDescriptionValid && isDescriptionTouched ? `${classes.invalid}` : "";
 
   return (
     <form className={classes.form} onSubmit={submitHandler}>
       <label htmlFor="description">
         Description
-        <input id="description" type="text" ref={descriptionRef} />
+        <input
+          className={descriptionClass}
+          id="description"
+          type="text"
+          ref={descriptionRef}
+          onChange={descriptionChangedHandler}
+          onBlur={descriptionTouchedHandler}
+        />
       </label>
+      {descriptionIsNotValid && (
+        <p className="error">Description cannot be empty</p>
+      )}
       <Button title="Add" />
       <Button title="Cancel" onClick={props.onClose} />
     </form>

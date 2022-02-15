@@ -16,3 +16,7 @@ input {
 .form button {
   margin-right: 1rem;
 }
+
+.invalid {
+  background-color: rgba(255, 0, 0, 0.8);
+}
