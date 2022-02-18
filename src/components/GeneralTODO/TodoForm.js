@@ -20,16 +20,18 @@ function TodoForm(props) {
   const submitHandler = (event) => {
     event.preventDefault();
     const descriptionValue = descriptionRef.current.value;
-    if (descriptionValue.length === 0) {
-      setDescriptionIsNotValid(true);
+    if (!isDescriptionValid) {
+      // setDescriptionIsNotValid(true);
       return;
     }
     console.log(descriptionValue);
     props.onSubmit(descriptionValue);
   };
-
-  const descriptionClass =
-    !isDescriptionValid && isDescriptionTouched ? `${classes.invalid}` : "";
+  //CONTINUE WITH THIS LOGIC
+  if (!isDescriptionValid && isDescriptionTouched) {
+  }
+  const isDescriptionInvalid = !isDescriptionValid && isDescriptionTouched;
+  const descriptionClass = isDescriptionInvalid ? `${classes.invalid}` : "";
 
   return (
     <form className={classes.form} onSubmit={submitHandler}>
@@ -44,7 +46,7 @@ function TodoForm(props) {
           onBlur={descriptionTouchedHandler}
         />
       </label>
-      {descriptionIsNotValid && (
+      {isDescriptionInvalid && (
         <p className="error">Description cannot be empty</p>
       )}
       <Button title="Add" />

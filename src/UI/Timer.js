@@ -15,13 +15,16 @@ function Timer({ expiryTimestamp }) {
     play();
     setIsAlarmOff(true);
   }
-  const hoursE = <span>{hours}</span>;
+  const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds;
+  const minutesDisplay = minutes < 10 ? `0${minutes}` : minutes;
+  const hoursDisplay = hours < 10 ? `0${hours}` : hours;
+  const hoursE = <span>{hoursDisplay}</span>;
   return (
     <div className={classes.timer}>
       <div>
         {hours > 0 ? hoursE : ""}
         {hours > 0 && ":"}
-        <span>{minutes}</span>:<span>{seconds}</span>
+        <span>{minutesDisplay}</span>:<span>{secondsDisplay}</span>
       </div>
       <button onClick={isRunning ? pause : resume}>
         {isRunning ? "Pause" : "Start"}
