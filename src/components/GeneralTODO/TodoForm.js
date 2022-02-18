@@ -1,36 +1,36 @@
 import React, { useRef } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import Button from "../../UI/Button";
 import classes from "./TodoForm.module.css";
 
 function TodoForm(props) {
   const descriptionRef = useRef();
-
-  const [descriptionIsNotValid, setDescriptionIsNotValid] = useState(false);
   const [descriptionText, setDescriptionText] = useState("");
-  const [isDescriptionTouched, setIsDescriptionTouched] = useState(false);
+  const [isDescriptionTouchedorSentEmpty, setIsDescriptionTouchedorSentEmpty] =
+    useState(false);
   const isDescriptionValid = descriptionText.length > 0;
+  console.log(isDescriptionValid);
   const descriptionChangedHandler = () => {
     setDescriptionText(descriptionRef.current.value);
   };
   const descriptionTouchedHandler = () => {
-    setIsDescriptionTouched(true);
+    setIsDescriptionTouchedorSentEmpty(true);
   };
 
   const submitHandler = (event) => {
     event.preventDefault();
     const descriptionValue = descriptionRef.current.value;
     if (!isDescriptionValid) {
-      // setDescriptionIsNotValid(true);
+      setIsDescriptionTouchedorSentEmpty(true);
       return;
     }
     console.log(descriptionValue);
     props.onSubmit(descriptionValue);
   };
-  //CONTINUE WITH THIS LOGIC
-  if (!isDescriptionValid && isDescriptionTouched) {
-  }
-  const isDescriptionInvalid = !isDescriptionValid && isDescriptionTouched;
+
+  const isDescriptionInvalid =
+    !isDescriptionValid && isDescriptionTouchedorSentEmpty;
   const descriptionClass = isDescriptionInvalid ? `${classes.invalid}` : "";
 
   return (
