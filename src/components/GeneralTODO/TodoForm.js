@@ -1,22 +1,23 @@
 import React, { useRef } from "react";
-import { useEffect } from "react";
 import { useState } from "react";
 import Button from "../../UI/Button";
 import classes from "./TodoForm.module.css";
 
 function TodoForm(props) {
   const descriptionRef = useRef();
+  //Form Validation Part
   const [descriptionText, setDescriptionText] = useState("");
   const [isDescriptionTouchedorSentEmpty, setIsDescriptionTouchedorSentEmpty] =
     useState(false);
   const isDescriptionValid = descriptionText.length > 0;
-  console.log(isDescriptionValid);
+
   const descriptionChangedHandler = () => {
     setDescriptionText(descriptionRef.current.value);
   };
   const descriptionTouchedHandler = () => {
     setIsDescriptionTouchedorSentEmpty(true);
   };
+  //Form Validation Ends
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -25,7 +26,7 @@ function TodoForm(props) {
       setIsDescriptionTouchedorSentEmpty(true);
       return;
     }
-    console.log(descriptionValue);
+
     props.onSubmit(descriptionValue);
   };
 
