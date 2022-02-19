@@ -15,6 +15,7 @@ code {
 
 .error {
   color: red;
+  font-size: 1rem;
 }
 
 :root {
@@ -22,4 +23,8 @@ code {
   --button-color: #f7b733;
   --main-header-color: #fc4a1a;
   --main-text-color: #dfdce3;
+}
+
+.invalid {
+  background-color: rgba(255, 0, 0, 0.8);
 }

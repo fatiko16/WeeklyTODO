@@ -1,15 +1,24 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-function useValidate() {
-  const [descriptionIsNotValid, setDescriptionIsNotValid] = useState(false);
-  const [descriptionText, setDescriptionText] = useState("");
-  const [isDescriptionTouched, setIsDescriptionTouched] = useState(false);
-  const isDescriptionValid = descriptionText.length > 0;
-  const descriptionChangedHandler = (valueRef) => {
-    setDescriptionText(valueRef);
+function useValidate(validate) {
+  const [value, setValue] = useState("");
+  const [isValueTouched, setIsValueTouched] = useState(false);
+  const isValueValid = validate(value.length);
+
+  const valueChangedHandler = (event) => {
+    setValue(event.target.value);
   };
-  const descriptionTouchedHandler = () => {
-    setIsDescriptionTouched(true);
+
+  const valueTouchedHandler = () => {
+    setIsValueTouched(true);
+  };
+
+  return {
+    value,
+    isValueTouched,
+    isValueValid,
+    valueChangedHandler,
+    valueTouchedHandler,
   };
 }
 
