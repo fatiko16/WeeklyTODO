@@ -15,6 +15,8 @@ function DayItemControls(props) {
         className={classes.control}
         onClick={() => dispatch(uiActions.showNewItemWindow(props.day))}
       />
+      <p>Work Done: {props.totalWorkDone}</p>
+      <p>Remaining Work: {props.totalRemainingWork}</p>
       <Button
         title={"Show Item"}
         className={classes.control}
