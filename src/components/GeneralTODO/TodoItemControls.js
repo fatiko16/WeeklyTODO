@@ -22,6 +22,7 @@ function TodoItemControls(props) {
     dispatch(todoActions.chooseTodoList(props.title));
     history.push("/todo/add-todo");
   };
+
   const deleteListHandler = () => {
     allTitleTodos.forEach((todo) => dispatch(deleteTodo(todo.id)));
     dispatch(deleteTodoList(props.titleID));

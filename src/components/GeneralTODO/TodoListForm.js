@@ -5,10 +5,7 @@ import Button from "../../UI/Button";
 import { useDispatch } from "react-redux";
 import { todoActions } from "../../store/todo-slice";
 import useValidate from "../hooks/useValidate";
-
-const validateByLength = (valueLength) => {
-  return valueLength > 0;
-};
+import { validateByLength } from "../../utilities/ValidationMethods";
 
 function TodoListForm(props) {
   const dispatch = useDispatch();

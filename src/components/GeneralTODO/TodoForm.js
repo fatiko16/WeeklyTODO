@@ -2,10 +2,8 @@ import React from "react";
 import Button from "../../UI/Button";
 import classes from "./TodoForm.module.css";
 import useValidate from "../hooks/useValidate";
+import { validateByLength } from "../../utilities/ValidationMethods";
 
-const validateByLength = (valueLength) => {
-  return valueLength > 0;
-};
 function TodoForm(props) {
   const {
     value: descriptionValue,

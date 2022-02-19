@@ -4,6 +4,7 @@ import DayTask from "./DayTask";
 import DayItemControls from "./DayItemControls";
 import Button from "../../UI/Button";
 import { useParams, useHistory } from "react-router-dom";
+import { getWorkDoneAndRemaining } from "../../utilities/CalculateWorkDoneAndRemaining";
 const days = [
   "Monday",
   "Tuesday",
@@ -18,7 +19,8 @@ function SingleDay(props) {
   const history = useHistory();
   const params = useParams();
   const dayTasks = props.tasks.filter((task) => task.day === params.day);
-
+  const { workDone: totalWorkDone, workRemaining: totalRemainingWork } =
+    getWorkDoneAndRemaining(dayTasks);
   const nextDay = () => {
     const dayIndex = days.indexOf(params.day);
     if (dayIndex === days.length - 1) {
@@ -59,7 +61,11 @@ function SingleDay(props) {
           />
         );
       })}
-      <DayItemControls day={params.day} />
+      <DayItemControls
+        day={params.day}
+        totalWorkDone={totalWorkDone}
+        totalRemainingWork={totalRemainingWork}
+      />
     </div>
   );
 }
