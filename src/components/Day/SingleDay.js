@@ -30,6 +30,8 @@ function SingleDay(props) {
     }
   };
 
+  const isDayValid = days.includes(params.day);
+
   const previousDay = () => {
     const dayIndex = days.indexOf(params.day);
     if (dayIndex === 0) {
@@ -37,37 +39,43 @@ function SingleDay(props) {
     }
     return dayIndex - 1;
   };
-
-  return (
-    <div className={classes.single}>
-      <div className={classes.control}>
-        <Button
-          title={"Previous"}
-          onClick={() => history.push(`/week/${days[previousDay()]}`)}
-        />
-        <h1>{params.day}</h1>
-        <Button
-          title={"Next"}
-          onClick={() => history.push(`/week/${days[nextDay()]}`)}
+  let content;
+  if (isDayValid) {
+    content = (
+      <div className={classes.single}>
+        <div className={classes.control}>
+          <Button
+            title={"Previous"}
+            onClick={() => history.push(`/week/${days[previousDay()]}`)}
+          />
+          <h1>{params.day}</h1>
+          <Button
+            title={"Next"}
+            onClick={() => history.push(`/week/${days[nextDay()]}`)}
+          />
+        </div>
+        {dayTasks.map((task) => {
+          return (
+            <DayTask
+              key={task.id}
+              task={dayTasks.filter((item) => task.id === item.id)[0]}
+              onDelete={props.onDelete}
+              onDone={props.onDone}
+            />
+          );
+        })}
+        <DayItemControls
+          day={params.day}
+          totalWorkDone={totalWorkDone}
+          totalRemainingWork={totalRemainingWork}
         />
       </div>
-      {dayTasks.map((task) => {
-        return (
-          <DayTask
-            key={task.id}
-            task={dayTasks.filter((item) => task.id === item.id)[0]}
-            onDelete={props.onDelete}
-            onDone={props.onDone}
-          />
-        );
-      })}
-      <DayItemControls
-        day={params.day}
-        totalWorkDone={totalWorkDone}
-        totalRemainingWork={totalRemainingWork}
-      />
-    </div>
-  );
+    );
+  } else {
+    content = <p>Nothing to see here</p>;
+  }
+
+  return content;
 }
 
 export default SingleDay;

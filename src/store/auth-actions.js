@@ -11,16 +11,18 @@ const getRemainingTime = (expiringTime) => {
 };
 
 export const retrieveStoredTokendData = () => {
-  const storedToken = localStorage.getItem("token");
-  const storedExpirationTime = localStorage.getItem("expirationTime");
-  const remainingTime = getRemainingTime(storedExpirationTime);
-  return {
-    token: storedToken,
-    duration: remainingTime,
+  return () => {
+    const storedToken = localStorage.getItem("token");
+    const storedExpirationTime = localStorage.getItem("expirationTime");
+    const remainingTime = getRemainingTime(storedExpirationTime);
+    return {
+      token: storedToken,
+      duration: remainingTime,
+    };
   };
 };
 
-let logoutTimer;
+export let logoutTimer;
 export const updateTimer = (time) => {
   return (dispatch) => {
     logoutTimer = setTimeout(() => dispatch(logoutHandler()), time);
