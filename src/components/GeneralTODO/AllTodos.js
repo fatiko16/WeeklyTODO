@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import classes from "./AllTodos.module.css";
 import TodoList from "../GeneralTODO/TodoList";
 import AddTodoList from "./AddTodoList";
@@ -11,13 +11,6 @@ import { fetchTitles } from "../../store/todo-actions";
 import { useSelector } from "react-redux";
 import { todoActions } from "../../store/todo-slice";
 
-const getAllTitles = (todos) => {
-  const titles = todos.map((todo) => todo.title);
-  const filteredTitles = titles.filter(
-    (value, index, self) => self.indexOf(value) === index
-  );
-  return filteredTitles;
-};
 //CONTINUE RENDERING ALL LISTS
 function AllTodos() {
   const history = useHistory();

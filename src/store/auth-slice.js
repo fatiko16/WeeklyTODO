@@ -5,6 +5,8 @@ const authSlice = createSlice({
   initialState: {
     isLoggedIn: false,
     token: "",
+    hasError: false,
+    error: "",
   },
   reducers: {
     login(state, action) {
@@ -14,6 +16,14 @@ const authSlice = createSlice({
     logout(state, action) {
       state.isLoggedIn = false;
       state.token = "";
+    },
+    gotError(state, action) {
+      state.hasError = true;
+      state.error = action.payload;
+    },
+    clearError(state) {
+      state.hasError = false;
+      state.error = "";
     },
   },
 });

@@ -5,7 +5,6 @@ import {
   getDocs,
   doc,
   deleteDoc,
-  updateDoc,
 } from "firebase/firestore";
 import { todoActions } from "./todo-slice";
 const todoCollectionRef = collection(db, "todos");

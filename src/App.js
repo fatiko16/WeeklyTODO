@@ -10,6 +10,7 @@ import NewItemWindow from "./components/Day/NewItemWindow";
 import SignUp from "./components/Pages/SignUp";
 import Login from "./components/Pages/Login";
 import GeneralTODO from "./components/Pages/GeneralTODO";
+import HomePage from "./components/Pages/HomePage";
 import { logoutTimer, updateTimer } from "./store/auth-actions";
 import { authActions } from "./store/auth-slice";
 import { retrieveStoredTokendData } from "./store/auth-actions";
@@ -34,7 +35,7 @@ function App() {
     console.log("First of all hiya from tokenRefresher");
     if (token) {
       dispatch(authActions.login(token));
-      dispatch(updateTimer(remainingTime));
+      dispatch(updateTimer(remainingTime - 50 * 60 * 1000));
     }
   }, [dispatch, token, remainingTime]);
   console.log(logoutTimer);
@@ -43,6 +44,9 @@ function App() {
       <Suspense fallback={<p>Loading...</p>}>
         {isNewItemWindowShown && <NewItemWindow />}
         <Switch>
+          <Route path="/" exact>
+            <HomePage />
+          </Route>
           {!isLoggedIn && (
             <Route path="/signup" exact>
               <SignUp />
@@ -68,8 +72,8 @@ function App() {
               <GeneralTODO />
             </Route>
           )}
-          <Route path="/" exact>
-            <Redirect to="/week" />
+          <Route path="*">
+            <Redirect to="/" />
           </Route>
         </Switch>
       </Suspense>

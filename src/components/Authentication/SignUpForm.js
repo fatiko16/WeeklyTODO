@@ -1,5 +1,4 @@
 import React from "react";
-import classes from "./SignUpForm.module.css";
 import AuthForm from "./AuthForm";
 function SignUpForm() {
   return (
