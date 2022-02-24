@@ -35,7 +35,7 @@ function App() {
     console.log("First of all hiya from tokenRefresher");
     if (token) {
       dispatch(authActions.login(token));
-      dispatch(updateTimer(remainingTime - 50 * 60 * 1000));
+      dispatch(updateTimer(remainingTime));
     }
   }, [dispatch, token, remainingTime]);
   console.log(logoutTimer);
