@@ -10,6 +10,25 @@ const getRemainingTime = (expiringTime) => {
   return remainingTime;
 };
 
+const getUserUID = async (idToken) => {
+  const apiKey = process.env.REACT_APP_FIREBASE_API_KEY;
+  const requestUrl =
+    "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=" + apiKey;
+  const response = await fetch(requestUrl, {
+    method: "POST",
+    body: JSON.stringify({
+      idToken: idToken,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await response.json();
+  if (response.ok) {
+    console.log(data);
+  }
+};
+
 export const retrieveStoredTokendData = () => {
   return () => {
     const storedToken = localStorage.getItem("token");
@@ -73,8 +92,9 @@ export const loginOrCreateUserHandler = (
           () => dispatch(logoutHandler()),
           remainingTime
         );
-        console.log(logoutTimer);
+        getUserUID(token);
         dispatch(authActions.login(token));
+        dispatch(authActions.clearError());
         // console.log(data);
       } else {
         let error = "Encountered an error while signing up";
@@ -89,81 +109,3 @@ export const loginOrCreateUserHandler = (
     }
   };
 };
-
-// export const logoutHandler = () => {
-//   return (dispatch) => {
-//     console.log("loggin out");
-//     console.log(logoutTimer);
-//     if (logoutTimer) {
-//       clearTimeout(logoutTimer);
-//     }
-//     dispatch(authActions.logout());
-//   };
-// };
-
-// export const createNewUser = (url, email, password, returnSecureToken) => {
-//   return async (dispatch) => {
-//     const apiKey = process.env.REACT_APP_FIREBASE_API_KEY;
-//     const requestUrl = url + apiKey;
-
-//     const response = await fetch(requestUrl, {
-//       method: "POST",
-//       body: JSON.stringify({
-//         email: email,
-//         password: password,
-//         returnSecureToken: returnSecureToken,
-//       }),
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     });
-//     const data = await response.json();
-//     if (response.ok) {
-//       const token = data.idToken;
-//       localStorage.setItem("token", token);
-//       dispatch(authActions.login(token));
-//     } else {
-//       let error = "Encountered an error while signing up";
-//       if (data && data.error && data.error.message) {
-//         error = data.error.message;
-//       }
-//       dispatch(authActions.gotError(error));
-//     }
-
-//     console.log(requestUrl, email, password, returnSecureToken);
-//   };
-// };
-
-// export const loginUser = (url, email, password, returnSecureToken) => {
-//   return async (dispatch) => {
-//     const apiKey = process.env.REACT_APP_FIREBASE_API_KEY;
-//     const requestUrl = url + apiKey;
-//     try {
-//       const response = await fetch(requestUrl, {
-//         method: "POST",
-//         body: JSON.stringify({
-//           email: email,
-//           password: password,
-//           returnSecureToken: returnSecureToken,
-//         }),
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       });
-//       const data = await response.json();
-//       if (response.ok) {
-//         console.log(data);
-//         dispatch(authActions.login(data.idToken));
-//       } else {
-//         let error = "Encountered an error while signing up";
-//         if (data && data.error && data.error.message) {
-//           error = data.error.message;
-//         }
-//         dispatch(authActions.gotError(error));
-//         throw new Error(error);
-//       }
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-// };
