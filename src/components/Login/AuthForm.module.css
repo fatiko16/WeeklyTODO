@@ -1,0 +1,25 @@
+.signup {
+  /* border: 1px solid black; */
+  width: 30%;
+  margin: 0 auto;
+  background-color: var(--form-bg-color);
+  padding: 0.5rem 2rem 1rem 1rem;
+  border-radius: 5px;
+}
+.signup h1 {
+  text-align: center;
+  color: var(--main-header-color);
+}
+
+.signup label {
+  font-size: 1.5rem;
+  font-weight: 600;
+  /* color: var(--main-text-color); */
+}
+
+.signup input {
+  margin: 1rem 0;
+  width: 100%;
+  padding: 0.5rem 0.3rem;
+  border-radius: 4px;
+}
