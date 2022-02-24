@@ -17,7 +17,7 @@ function DayTaskForm(props) {
     isValueValid: isTitleValid,
     valueChangedHandler: titleChangedHandler,
     valueTouchedHandler: titleTouchedHandler,
-  } = useValidate(validateByLength);
+  } = useValidate(validateByLength, props.title);
 
   const {
     value: durationValue,
@@ -25,7 +25,7 @@ function DayTaskForm(props) {
     isValueValid: isDurationValid,
     valueChangedHandler: durationChangedHandler,
     valueTouchedHandler: durationTouchedHandler,
-  } = useValidate(validateByTime);
+  } = useValidate(validateByTime, props.duration);
 
   const isInvalidTitleEntered = !isTitleValid && isTitleTouched;
   const titleClasses = isInvalidTitleEntered ? "invalid" : "";
@@ -35,6 +35,7 @@ function DayTaskForm(props) {
 
   const submitHandler = (event) => {
     event.preventDefault();
+
     props.onSubmit(titleValue, durationValue);
   };
   const hideModalHandler = () => {

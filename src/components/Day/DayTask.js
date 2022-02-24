@@ -42,6 +42,9 @@ function DayTask(props) {
           onChange={checkboxHandler}
         />
       </div>
+      {/* {props.task.id === "hzy1pXQdNdp66GUjQ9M8" && (
+        <Timer expiryTimestamp={time} autoStart={false} />
+      )} */}
       <Timer expiryTimestamp={time} autoStart={false} />
       <div className={classes.controls}>
         <Button title="Edit" onClick={editTaskHandler} />

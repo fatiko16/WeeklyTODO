@@ -17,7 +17,6 @@ function App() {
   );
   const tasks = useSelector((state) => state.task.tasks);
   const changed = useSelector((state) => state.task.changed);
-  console.log(tasks);
 
   useEffect(() => {
     dispatch(fetchTasks());
