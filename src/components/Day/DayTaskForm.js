@@ -33,6 +33,9 @@ function DayTaskForm(props) {
   const isInvalidDurationEntered = !isDurationValid && isDurationTouched;
   const duration = isInvalidDurationEntered ? "invalid" : "";
 
+  const isFormValid = isDurationValid && isTitleValid;
+  console.log(isFormValid);
+
   const submitHandler = (event) => {
     event.preventDefault();
 
@@ -76,7 +79,10 @@ function DayTaskForm(props) {
           </p>
         )}
       </label>
-      <Button title={props.isEditing ? "Edit Task" : "Add Task"} />
+      <Button
+        title={props.isEditing ? "Edit Task" : "Add Task"}
+        disabled={!isFormValid}
+      />
       <Button title={"Cancel"} type="button" onClick={hideModalHandler} />
     </form>
   );
