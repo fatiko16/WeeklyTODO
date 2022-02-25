@@ -23,7 +23,8 @@ function App() {
   const tasks = useSelector((state) => state.task.tasks);
   const changed = useSelector((state) => state.task.changed);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-
+  const userUID = useSelector((state) => state.auth.userUID);
+  console.log(isLoggedIn);
   useEffect(() => {
     dispatch(fetchTasks());
     dispatch(taskActions.tasksNoUpdate());
@@ -32,12 +33,11 @@ function App() {
   const token = tokenData.token;
   const remainingTime = tokenData.duration;
   useEffect(() => {
-    console.log("First of all hiya from tokenRefresher");
     if (token) {
-      dispatch(authActions.login(token));
+      dispatch(authActions.login(token, userUID));
       dispatch(updateTimer(remainingTime));
     }
-  }, [dispatch, token, remainingTime]);
+  }, [dispatch, token, remainingTime, userUID]);
   console.log(logoutTimer);
   return (
     <Layout>

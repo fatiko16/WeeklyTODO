@@ -25,7 +25,7 @@ const getUserUID = async (idToken) => {
   });
   const data = await response.json();
   if (response.ok) {
-    console.log(data);
+    return data.users[0].localId;
   }
 };
 
@@ -85,17 +85,18 @@ export const loginOrCreateUserHandler = (
       if (response.ok) {
         const token = data.idToken;
         const expiringTime = getExpiringTime(data.expiresIn * 1000);
+        const userUID = await getUserUID(token);
         localStorage.setItem("expirationTime", expiringTime);
+        localStorage.setItem("userUID", userUID);
         localStorage.setItem("token", token);
         const remainingTime = getRemainingTime(expiringTime);
         logoutTimer = setTimeout(
           () => dispatch(logoutHandler()),
           remainingTime
         );
-        getUserUID(token);
-        dispatch(authActions.login(token));
+        console.log(userUID);
+        dispatch(authActions.login({ token, userUID }));
         dispatch(authActions.clearError());
-        // console.log(data);
       } else {
         let error = "Encountered an error while signing up";
         if (data && data.error && data.error.message) {
