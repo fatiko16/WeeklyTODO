@@ -1,7 +1,6 @@
 import React, { useEffect, Suspense } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { fetchTasks } from "./store/task-actions";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchTasks, getUserData } from "./store/task-actions";
 import { taskActions } from "./store/task-slice";
 import { Route, Redirect, Switch } from "react-router-dom";
 import Layout from "./layout/Layout";
@@ -14,7 +13,7 @@ import HomePage from "./components/Pages/HomePage";
 import { updateTimer } from "./store/auth-actions";
 import { authActions } from "./store/auth-slice";
 import { retrieveStoredTokendData } from "./store/auth-actions";
-import { getUserData } from "./store/task-actions";
+
 const Week = React.lazy(() => import("./components/Week/Week"));
 function App() {
   const dispatch = useDispatch();
@@ -25,23 +24,24 @@ function App() {
   const changed = useSelector((state) => state.task.changed);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
 
-  useEffect(() => {
-    dispatch(fetchTasks());
-    dispatch(taskActions.tasksNoUpdate());
-  }, [changed, dispatch]);
   const tokenData = dispatch(retrieveStoredTokendData());
   const token = tokenData.token;
   const remainingTime = tokenData.duration;
   const userUID = tokenData.userUID;
-  const userData = dispatch(getUserData(userUID));
-  console.log(userData);
+
+  // const userData = dispatch(getUserData(userUID));
   useEffect(() => {
-    console.log(userUID);
     if (token) {
       dispatch(authActions.login(token, userUID));
       dispatch(updateTimer(remainingTime));
     }
   }, [dispatch, token, remainingTime, userUID]);
+
+  useEffect(() => {
+    // dispatch(fetchTasks());
+    dispatch(getUserData(userUID));
+    dispatch(taskActions.tasksNoUpdate());
+  }, [changed, dispatch, userUID]);
   return (
     <Layout>
       <Suspense fallback={<p>Loading...</p>}>
@@ -75,9 +75,16 @@ function App() {
               <GeneralTODO />
             </Route>
           )}
+
           <Route path="*">
             <Redirect to="/" />
           </Route>
+
+          {/* {!isLoggedIn && (
+            <Route path="*">
+              <Redirect to="/" />
+            </Route>
+          )} */}
         </Switch>
       </Suspense>
     </Layout>

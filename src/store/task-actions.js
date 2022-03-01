@@ -39,6 +39,7 @@ export const fetchTasks = () => {
     try {
       const data = await getDocs(tasksCollectionRef);
       const tasks = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      console.log(tasks);
       dispatch(taskActions.replaceTasks(tasks));
     } catch (error) {
       console.log("Something went wrong while getting your todos.");
@@ -102,24 +103,42 @@ export const updateTask = (id, title, duration) => {
   };
 };
 
+//-----------------------------------------------------EVERYTHING ON USER----------------------------------------
 export const addTaskToUser = (day, title, duration, userUID) => {
   return async () => {
     try {
-    } catch (error) {}
+      await addDoc(tasksCollectionRef, {
+        day: day,
+        title: title,
+        duration: duration,
+        isDone: false,
+        userUID: userUID,
+      });
+    } catch (error) {
+      console.log(error);
+      console.log("Something went wrong while creating an task");
+    }
   };
 };
 
 export const getUserData = (userUID) => {
-  return async () => {
+  return async (dispatch) => {
     try {
-      const q = query(tasksCollectionRef, where("userID", "==", userUID));
-      const userTasks = await getDocs(q);
-      userTasks.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
-      });
-
-      console.log(userTasks.data);
+      console.log(userUID);
+      if (userUID) {
+        const q = query(tasksCollectionRef, where("userUID", "==", userUID));
+        const userTasksData = await getDocs(q);
+        const userTasks = userTasksData.docs.map((doc) => ({
+          ...doc.data(),
+          id: doc.id,
+        }));
+        dispatch(taskActions.replaceTasks(userTasks));
+        // console.log(userTasksData);
+        // userTasksData.forEach((doc) => {
+        //   // doc.data() is never undefined for query doc snapshots
+        //   console.log(doc.id, " => ", doc.data());
+        // });
+      }
     } catch (error) {
       console.log(error);
       console.log("Encountered error while pulling user data");

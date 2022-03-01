@@ -34,11 +34,9 @@ function DayTaskForm(props) {
   const duration = isInvalidDurationEntered ? "invalid" : "";
 
   const isFormValid = isDurationValid && isTitleValid;
-  console.log(isFormValid);
 
   const submitHandler = (event) => {
     event.preventDefault();
-
     props.onSubmit(titleValue, durationValue);
   };
   const hideModalHandler = () => {
