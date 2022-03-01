@@ -6,9 +6,12 @@ import {
   doc,
   deleteDoc,
   updateDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { taskActions } from "./task-slice";
 const tasksCollectionRef = collection(db, "tasks");
+const usersCollectionRef = collection(db, "users");
 
 // export const sendTaskData = (cart) => {
 //   return async (dispatch) => {
@@ -81,12 +84,6 @@ export const deleteTask = (id) => {
     }
   };
 };
-// const checkTaskDoneHandler = async (id, currentValue) => {
-//     const taskDoc = doc(db, "tasks", id);
-//     const newFields = { isDone: !currentValue };
-//     await updateDoc(taskDoc, newFields);
-//     setUploaded(true);
-//   };
 
 export const toggleTaskDone = (id, currentValue) => {
   return async () => {
@@ -102,5 +99,30 @@ export const updateTask = (id, title, duration) => {
     const taskDoc = doc(db, "tasks", id);
     const newFields = { title: title, duration: duration };
     await updateDoc(taskDoc, newFields);
+  };
+};
+
+export const addTaskToUser = (day, title, duration, userUID) => {
+  return async () => {
+    try {
+    } catch (error) {}
+  };
+};
+
+export const getUserData = (userUID) => {
+  return async () => {
+    try {
+      const q = query(tasksCollectionRef, where("userID", "==", userUID));
+      const userTasks = await getDocs(q);
+      userTasks.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+      });
+
+      console.log(userTasks.data);
+    } catch (error) {
+      console.log(error);
+      console.log("Encountered error while pulling user data");
+    }
   };
 };

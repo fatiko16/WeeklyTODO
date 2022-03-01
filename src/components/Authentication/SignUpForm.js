@@ -6,7 +6,9 @@ function SignUpForm() {
   const dispatch = useDispatch();
   const url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=";
   const submitHandler = (email, password, returnSecureToken) => {
-    dispatch(loginOrCreateUserHandler(url, email, password, returnSecureToken));
+    dispatch(
+      loginOrCreateUserHandler(url, email, password, returnSecureToken, false)
+    );
   };
   return (
     <React.Fragment>

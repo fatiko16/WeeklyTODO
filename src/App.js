@@ -11,9 +11,10 @@ import SignUp from "./components/Pages/SignUp";
 import Login from "./components/Pages/Login";
 import GeneralTODO from "./components/Pages/GeneralTODO";
 import HomePage from "./components/Pages/HomePage";
-import { logoutTimer, updateTimer } from "./store/auth-actions";
+import { updateTimer } from "./store/auth-actions";
 import { authActions } from "./store/auth-slice";
 import { retrieveStoredTokendData } from "./store/auth-actions";
+import { getUserData } from "./store/task-actions";
 const Week = React.lazy(() => import("./components/Week/Week"));
 function App() {
   const dispatch = useDispatch();
@@ -23,8 +24,7 @@ function App() {
   const tasks = useSelector((state) => state.task.tasks);
   const changed = useSelector((state) => state.task.changed);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const userUID = useSelector((state) => state.auth.userUID);
-  console.log(isLoggedIn);
+
   useEffect(() => {
     dispatch(fetchTasks());
     dispatch(taskActions.tasksNoUpdate());
@@ -32,13 +32,16 @@ function App() {
   const tokenData = dispatch(retrieveStoredTokendData());
   const token = tokenData.token;
   const remainingTime = tokenData.duration;
+  const userUID = tokenData.userUID;
+  const userData = dispatch(getUserData(userUID));
+  console.log(userData);
   useEffect(() => {
+    console.log(userUID);
     if (token) {
       dispatch(authActions.login(token, userUID));
       dispatch(updateTimer(remainingTime));
     }
   }, [dispatch, token, remainingTime, userUID]);
-  console.log(logoutTimer);
   return (
     <Layout>
       <Suspense fallback={<p>Loading...</p>}>

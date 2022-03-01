@@ -1,4 +1,26 @@
 import { authActions } from "./auth-slice";
+import { db } from "../firebase-config";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  doc,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
+const usersCollectionRef = collection(db, "users");
+const createUser = async (userUID) => {
+  try {
+    await addDoc(usersCollectionRef, {
+      userUID: userUID,
+      tasks: [],
+      todos: [],
+    });
+  } catch (error) {
+    console.log(error);
+    console.log("Something went wrong while creating a user");
+  }
+};
 const getExpiringTime = (timeInMillieSeconds) => {
   const currentTime = new Date().getTime();
   const expiringTime = currentTime + timeInMillieSeconds;
@@ -33,10 +55,12 @@ export const retrieveStoredTokendData = () => {
   return () => {
     const storedToken = localStorage.getItem("token");
     const storedExpirationTime = localStorage.getItem("expirationTime");
+    const storedUserUID = localStorage.getItem("userUID");
     const remainingTime = getRemainingTime(storedExpirationTime);
     return {
       token: storedToken,
       duration: remainingTime,
+      userUID: storedUserUID,
     };
   };
 };
@@ -53,6 +77,7 @@ export const logoutHandler = () => {
     console.log("loggin out");
     localStorage.removeItem("token");
     localStorage.removeItem("expirationTime");
+    localStorage.removeItem("userUID");
     if (logoutTimer) {
       clearTimeout(logoutTimer);
     }
@@ -64,7 +89,8 @@ export const loginOrCreateUserHandler = (
   url,
   email,
   password,
-  returnSecureToken
+  returnSecureToken,
+  isLogin
 ) => {
   return async (dispatch) => {
     const apiKey = process.env.REACT_APP_FIREBASE_API_KEY;
@@ -94,9 +120,11 @@ export const loginOrCreateUserHandler = (
           () => dispatch(logoutHandler()),
           remainingTime
         );
-        console.log(userUID);
         dispatch(authActions.login({ token, userUID }));
         dispatch(authActions.clearError());
+        if (!isLogin) {
+          await createUser(userUID);
+        }
       } else {
         let error = "Encountered an error while signing up";
         if (data && data.error && data.error.message) {
