@@ -1,14 +1,8 @@
 import { authActions } from "./auth-slice";
 import { db } from "../firebase-config";
-import {
-  addDoc,
-  collection,
-  getDocs,
-  doc,
-  deleteDoc,
-  updateDoc,
-} from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 const usersCollectionRef = collection(db, "users");
+const apiKey = process.env.REACT_APP_FIREBASE_API_KEY;
 const createUser = async (userUID) => {
   try {
     await addDoc(usersCollectionRef, {
@@ -93,7 +87,6 @@ export const loginOrCreateUserHandler = (
   isLogin
 ) => {
   return async (dispatch) => {
-    const apiKey = process.env.REACT_APP_FIREBASE_API_KEY;
     const requestUrl = url + apiKey;
     try {
       const response = await fetch(requestUrl, {
@@ -133,6 +126,20 @@ export const loginOrCreateUserHandler = (
         dispatch(authActions.gotError(error));
         throw new Error(error);
       }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const refreshIDToken = () => {
+  return async () => {
+    try {
+      const response = await fetch(
+        "https://securetoken.googleapis.com/v1/token?key=" + apiKey
+      );
+      const data = await response.json();
+      console.log(data);
     } catch (error) {
       console.log(error);
     }

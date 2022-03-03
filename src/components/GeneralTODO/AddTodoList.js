@@ -5,8 +5,6 @@ import Modal from "../../UI/Modal";
 import TodoListForm from "./TodoListForm";
 function AddTodoList() {
   const history = useHistory();
-  // const dispatch = useDispatch();
-  // const todoInfo = useSelector((state) => state.todo);
 
   const closeModalHandler = () => {
     history.push("/todo");

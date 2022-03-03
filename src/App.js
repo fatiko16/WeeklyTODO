@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect, Suspense, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchTasks, getUserData } from "./store/task-actions";
 import { taskActions } from "./store/task-slice";
@@ -13,6 +13,7 @@ import HomePage from "./components/Pages/HomePage";
 import { updateTimer } from "./store/auth-actions";
 import { authActions } from "./store/auth-slice";
 import { retrieveStoredTokendData } from "./store/auth-actions";
+import useIdle from "./components/hooks/useIdle";
 
 const Week = React.lazy(() => import("./components/Week/Week"));
 function App() {
@@ -23,6 +24,7 @@ function App() {
   const tasks = useSelector((state) => state.task.tasks);
   const changed = useSelector((state) => state.task.changed);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const [ebeninki, setEbeninki] = useState(false);
 
   const tokenData = dispatch(retrieveStoredTokendData());
   const token = tokenData.token;
@@ -38,7 +40,6 @@ function App() {
   }, [dispatch, token, remainingTime, userUID]);
 
   useEffect(() => {
-    // dispatch(fetchTasks());
     dispatch(getUserData(userUID));
     dispatch(taskActions.tasksNoUpdate());
   }, [changed, dispatch, userUID]);
@@ -46,6 +47,9 @@ function App() {
     <Layout>
       <Suspense fallback={<p>Loading...</p>}>
         {isNewItemWindowShown && <NewItemWindow />}
+        <button onClick={() => setEbeninki(!ebeninki)}>
+          Click me to change state
+        </button>
         <Switch>
           <Route path="/" exact>
             <HomePage />
@@ -75,16 +79,16 @@ function App() {
               <GeneralTODO />
             </Route>
           )}
-
-          <Route path="*">
-            <Redirect to="/" />
-          </Route>
-
-          {/* {!isLoggedIn && (
+          {isLoggedIn && (
             <Route path="*">
               <Redirect to="/" />
             </Route>
-          )} */}
+          )}
+          {!isLoggedIn && !token && (
+            <Route path="*">
+              <Redirect to="/" />
+            </Route>
+          )}
         </Switch>
       </Suspense>
     </Layout>

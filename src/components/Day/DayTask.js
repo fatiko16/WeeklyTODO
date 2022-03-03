@@ -6,11 +6,13 @@ import { deleteTask, toggleTaskDone } from "../../store/task-actions";
 import { taskActions } from "../../store/task-slice";
 import { uiActions } from "../../store/ui-slice";
 import { useDispatch } from "react-redux";
+import { useState } from "react";
 
 function DayTask(props) {
   const dispatch = useDispatch();
   const time = new Date();
   time.setSeconds(time.getSeconds() + parseInt(props.task.duration) * 60);
+  const [isUpdated, setIsUpdated] = useState(false);
   const deleteTaskHandler = () => {
     dispatch(deleteTask(props.task.id));
     dispatch(taskActions.tasksUpdated());
@@ -18,6 +20,10 @@ function DayTask(props) {
   const checkboxHandler = () => {
     dispatch(toggleTaskDone(props.task.id, props.task.isDone));
     dispatch(taskActions.tasksUpdated());
+  };
+
+  const resetIsUpdatedHandler = () => {
+    setIsUpdated(false);
   };
   const editTaskHandler = () => {
     dispatch(
