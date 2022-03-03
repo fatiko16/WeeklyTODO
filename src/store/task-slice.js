@@ -5,6 +5,7 @@ const taskSlice = createSlice({
   initialState: {
     tasks: [],
     changed: false,
+    newDuration: 0,
   },
   reducers: {
     replaceTasks(state, action) {
@@ -15,6 +16,12 @@ const taskSlice = createSlice({
     },
     tasksNoUpdate(state) {
       state.changed = false;
+    },
+    updateNewDuration(state, action) {
+      state.newDuration = action.payload;
+    },
+    resetNewDuration(state) {
+      state.newDuration = 0;
     },
   },
 });

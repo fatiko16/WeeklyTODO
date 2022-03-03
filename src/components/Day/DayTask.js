@@ -7,12 +7,12 @@ import { taskActions } from "../../store/task-slice";
 import { uiActions } from "../../store/ui-slice";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 function DayTask(props) {
   const dispatch = useDispatch();
   const time = new Date();
   time.setSeconds(time.getSeconds() + parseInt(props.task.duration) * 60);
-  const [isUpdated, setIsUpdated] = useState(false);
   const deleteTaskHandler = () => {
     dispatch(deleteTask(props.task.id));
     dispatch(taskActions.tasksUpdated());
@@ -22,9 +22,6 @@ function DayTask(props) {
     dispatch(taskActions.tasksUpdated());
   };
 
-  const resetIsUpdatedHandler = () => {
-    setIsUpdated(false);
-  };
   const editTaskHandler = () => {
     dispatch(
       uiActions.editWindowView({
@@ -51,7 +48,7 @@ function DayTask(props) {
       {/* {props.task.id === "hzy1pXQdNdp66GUjQ9M8" && (
         <Timer expiryTimestamp={time} autoStart={false} />
       )} */}
-      <Timer expiryTimestamp={time} autoStart={false} />
+      <Timer expiryTimestamp={time} autoStart={false} taskId={props.task.id} />
       <div className={classes.controls}>
         <Button title="Edit" onClick={editTaskHandler} />
         <Button title="Delete" onClick={deleteTaskHandler} />

@@ -95,10 +95,11 @@ export const toggleTaskDone = (id, currentValue) => {
 };
 
 export const updateTask = (id, title, duration) => {
-  return async () => {
+  return async (dispatch) => {
     console.log(id, title, duration);
     const taskDoc = doc(db, "tasks", id);
     const newFields = { title: title, duration: duration };
+    dispatch(taskActions.updateNewDuration(duration));
     await updateDoc(taskDoc, newFields);
   };
 };
