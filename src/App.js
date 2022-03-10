@@ -1,6 +1,6 @@
 import React, { useEffect, Suspense, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchTasks, getUserData } from "./store/task-actions";
+import { getUserData } from "./store/task-actions";
 import { taskActions } from "./store/task-slice";
 import { Route, Redirect, Switch } from "react-router-dom";
 import Layout from "./layout/Layout";
@@ -12,8 +12,7 @@ import GeneralTODO from "./components/Pages/GeneralTODO";
 import HomePage from "./components/Pages/HomePage";
 import { updateTimer } from "./store/auth-actions";
 import { authActions } from "./store/auth-slice";
-import { retrieveStoredTokendData } from "./store/auth-actions";
-import useIdle from "./components/hooks/useIdle";
+import { retrieveStoredTokendData, refreshIDToken } from "./store/auth-actions";
 
 const Week = React.lazy(() => import("./components/Week/Week"));
 function App() {
@@ -24,14 +23,14 @@ function App() {
   const tasks = useSelector((state) => state.task.tasks);
   const changed = useSelector((state) => state.task.changed);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const [ebeninki, setEbeninki] = useState(false);
+  // const authProps = useSelector((state) => state.auth);
 
   const tokenData = dispatch(retrieveStoredTokendData());
   const token = tokenData.token;
   const remainingTime = tokenData.duration;
   const userUID = tokenData.userUID;
+  const refreshToken = tokenData.refreshToken;
 
-  // const userData = dispatch(getUserData(userUID));
   useEffect(() => {
     if (token) {
       dispatch(authActions.login(token, userUID));
@@ -47,8 +46,8 @@ function App() {
     <Layout>
       <Suspense fallback={<p>Loading...</p>}>
         {isNewItemWindowShown && <NewItemWindow />}
-        <button onClick={() => setEbeninki(!ebeninki)}>
-          Click me to change state
+        <button onClick={() => dispatch(refreshIDToken(token))}>
+          Click to refresh log out timing
         </button>
         <Switch>
           <Route path="/" exact>

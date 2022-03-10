@@ -6,6 +6,7 @@ const authSlice = createSlice({
     isLoggedIn: false,
     token: "",
     userUID: "",
+    refreshToken: "",
     hasError: false,
     error: "",
   },
@@ -26,6 +27,9 @@ const authSlice = createSlice({
     clearError(state) {
       state.hasError = false;
       state.error = "";
+    },
+    storeRefreshToken(state, action) {
+      state.refreshToken = action.payload;
     },
   },
 });

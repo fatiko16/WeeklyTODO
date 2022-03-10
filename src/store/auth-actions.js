@@ -50,11 +50,13 @@ export const retrieveStoredTokendData = () => {
     const storedToken = localStorage.getItem("token");
     const storedExpirationTime = localStorage.getItem("expirationTime");
     const storedUserUID = localStorage.getItem("userUID");
+    const storedRefreshToken = localStorage.getItem("refreshToken");
     const remainingTime = getRemainingTime(storedExpirationTime);
     return {
       token: storedToken,
       duration: remainingTime,
       userUID: storedUserUID,
+      refreshToken: storedRefreshToken,
     };
   };
 };
@@ -72,6 +74,7 @@ export const logoutHandler = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("expirationTime");
     localStorage.removeItem("userUID");
+    localStorage.removeItem("refreshToken");
     if (logoutTimer) {
       clearTimeout(logoutTimer);
     }
@@ -105,6 +108,8 @@ export const loginOrCreateUserHandler = (
         const token = data.idToken;
         const expiringTime = getExpiringTime(data.expiresIn * 1000);
         const userUID = await getUserUID(token);
+        const refreshToken = data.refreshToken;
+        localStorage.setItem("refreshToken", refreshToken);
         localStorage.setItem("expirationTime", expiringTime);
         localStorage.setItem("userUID", userUID);
         localStorage.setItem("token", token);
@@ -132,11 +137,21 @@ export const loginOrCreateUserHandler = (
   };
 };
 
-export const refreshIDToken = () => {
+export const refreshIDToken = (token) => {
   return async () => {
     try {
+      console.log(token);
       const response = await fetch(
-        "https://securetoken.googleapis.com/v1/token?key=" + apiKey
+        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=" +
+          apiKey,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            token: token,
+            returnSecureToken: true,
+          }),
+        }
       );
       const data = await response.json();
       console.log(data);
