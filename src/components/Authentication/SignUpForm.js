@@ -1,14 +1,11 @@
 import React from "react";
 import AuthForm from "./AuthForm";
 import { useDispatch } from "react-redux";
-import { loginOrCreateUserHandler } from "../../store/auth-actions";
+import { createNewUser } from "../../store/auth-actions";
 function SignUpForm() {
   const dispatch = useDispatch();
-  const url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=";
-  const submitHandler = (email, password, returnSecureToken) => {
-    dispatch(
-      loginOrCreateUserHandler(url, email, password, returnSecureToken, false)
-    );
+  const submitHandler = (email, password) => {
+    dispatch(createNewUser(email, password));
   };
   return (
     <React.Fragment>

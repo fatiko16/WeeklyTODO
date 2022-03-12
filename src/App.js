@@ -1,4 +1,4 @@
-import React, { useEffect, Suspense, useState } from "react";
+import React, { useEffect, Suspense } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserData } from "./store/task-actions";
 import { taskActions } from "./store/task-slice";
@@ -10,9 +10,12 @@ import SignUp from "./components/Pages/SignUp";
 import Login from "./components/Pages/Login";
 import GeneralTODO from "./components/Pages/GeneralTODO";
 import HomePage from "./components/Pages/HomePage";
-import { updateTimer } from "./store/auth-actions";
+import {
+  updateTimer,
+  retrieveStoredTokendData,
+  user,
+} from "./store/auth-actions";
 import { authActions } from "./store/auth-slice";
-import { retrieveStoredTokendData, refreshIDToken } from "./store/auth-actions";
 
 const Week = React.lazy(() => import("./components/Week/Week"));
 function App() {
@@ -23,14 +26,12 @@ function App() {
   const tasks = useSelector((state) => state.task.tasks);
   const changed = useSelector((state) => state.task.changed);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  // const authProps = useSelector((state) => state.auth);
 
   const tokenData = dispatch(retrieveStoredTokendData());
   const token = tokenData.token;
   const remainingTime = tokenData.duration;
   const userUID = tokenData.userUID;
-  const refreshToken = tokenData.refreshToken;
-
+  console.log(userUID);
   useEffect(() => {
     if (token) {
       dispatch(authActions.login(token, userUID));
@@ -46,9 +47,6 @@ function App() {
     <Layout>
       <Suspense fallback={<p>Loading...</p>}>
         {isNewItemWindowShown && <NewItemWindow />}
-        <button onClick={() => dispatch(refreshIDToken(token))}>
-          Click to refresh log out timing
-        </button>
         <Switch>
           <Route path="/" exact>
             <HomePage />
