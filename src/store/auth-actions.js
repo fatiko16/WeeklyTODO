@@ -3,64 +3,38 @@ import { auth } from "../firebase-config";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 
-export const user = auth.currentUser;
-const getExpiringTime = (timeInMillieSeconds) => {
+const getExpiringTime = (expirationTime) => {
   const currentTime = new Date().getTime();
-  const expiringTime = currentTime + timeInMillieSeconds;
+  const expiringTime = expirationTime - currentTime;
   return expiringTime;
-};
-const getRemainingTime = (expiringTime) => {
-  const currentTime = new Date().getTime();
-  const remainingTime = expiringTime - currentTime;
-  return remainingTime;
-};
-
-export const retrieveStoredTokendData = () => {
-  return () => {
-    const storedToken = localStorage.getItem("token");
-    const storedExpirationTime = localStorage.getItem("expirationTime");
-    const storedUserUID = localStorage.getItem("userUID");
-    const storedRefreshToken = localStorage.getItem("refreshToken");
-    const remainingTime = getRemainingTime(storedExpirationTime);
-    return {
-      token: storedToken,
-      duration: remainingTime,
-      userUID: storedUserUID,
-      refreshToken: storedRefreshToken,
-    };
-  };
 };
 
 export let logoutTimer;
 export const updateTimer = (time) => {
   return (dispatch) => {
-    logoutTimer = setTimeout(() => dispatch(logoutHandler()), time);
+    const remainingTime = getExpiringTime(time);
+    console.log(remainingTime);
+    console.log(remainingTime / 60000, "In Minutes");
+    logoutTimer = setTimeout(() => dispatch(logoutHandler()), remainingTime);
   };
 };
 
 export const logoutHandler = () => {
-  return (dispatch) => {
-    console.log("loggin out");
-    localStorage.removeItem("token");
-    localStorage.removeItem("expirationTime");
-    localStorage.removeItem("userUID");
-    localStorage.removeItem("refreshToken");
+  return async (dispatch) => {
     if (logoutTimer) {
+      await signOut(auth);
       clearTimeout(logoutTimer);
     }
     dispatch(authActions.logout());
+    localStorage.removeItem("token");
   };
 };
 
 const userSignInSignUpHelper = (expiringTime, userUID, token, dispatch) => {
-  localStorage.setItem("expirationTime", expiringTime);
-  localStorage.setItem("userUID", userUID);
-  localStorage.setItem("token", token);
-  const remainingTime = getRemainingTime(expiringTime);
-  console.log(remainingTime);
-
+  const remainingTime = getExpiringTime(expiringTime);
   logoutTimer = setTimeout(() => dispatch(logoutHandler()), remainingTime);
   dispatch(authActions.login({ token, userUID }));
   dispatch(authActions.clearError());
@@ -71,10 +45,7 @@ export const createNewUser = (email, password) => {
     try {
       const data = await createUserWithEmailAndPassword(auth, email, password);
       const token = data.user.accessToken;
-      const expiringTime = getExpiringTime(
-        data.user.stsTokenManager.expirationTime
-      );
-
+      const expiringTime = data.user.stsTokenManager.expirationTime;
       const userUID = data.user.uid;
       userSignInSignUpHelper(expiringTime, userUID, token, dispatch);
     } catch (error) {
@@ -88,12 +59,21 @@ export const logInWithEmailAndPassword = (email, password) => {
     try {
       const data = await signInWithEmailAndPassword(auth, email, password);
       const token = data.user.accessToken;
-      console.log(data.user.stsTokenManager.expirationTime);
-      const expiringTime = getExpiringTime(
-        data.user.stsTokenManager.expirationTime
-      );
+      const expiringTime = data.user.stsTokenManager.expirationTime;
       const userUID = data.user.uid;
+      localStorage.setItem("token", token);
       userSignInSignUpHelper(expiringTime, userUID, token, dispatch);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const refreshAuth = () => {
+  return async () => {
+    try {
+      const data = await auth.currentUser.getIdToken(true);
+      console.log(data);
     } catch (error) {
       console.log(error);
     }

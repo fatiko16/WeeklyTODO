@@ -11,11 +11,13 @@ function AddTodoTask() {
   const dispatch = useDispatch();
   const todoInfo = useSelector((state) => state.todo);
 
+  const userUID = useSelector((state) => state.auth.userUID);
+
   const closeModalHandler = () => {
     history.push("/todo");
   };
   const submitHandler = (description) => {
-    dispatch(createTodo(todoInfo.title, description));
+    dispatch(createTodo(todoInfo.title, description, userUID));
     dispatch(todoActions.todosUpdated());
     closeModalHandler();
   };

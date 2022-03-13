@@ -18,12 +18,15 @@ function AllTodos() {
   const allTodos = useSelector((state) => state.todo.todos);
   const allTitles = useSelector((state) => state.todo.allTitles);
   const updated = useSelector((state) => state.todo.updated);
+  const userUID = useSelector((state) => state.auth.userUID);
+  console.log(allTitles);
+  console.log(allTodos);
 
   useEffect(() => {
-    dispatch(fetchTodos());
-    dispatch(fetchTitles());
+    dispatch(fetchTodos(userUID));
+    dispatch(fetchTitles(userUID));
     dispatch(todoActions.todosUnupdate());
-  }, [dispatch, updated]);
+  }, [dispatch, updated, userUID]);
   return (
     <React.Fragment>
       <Route path="/todo/add-list">

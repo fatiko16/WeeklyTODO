@@ -3,19 +3,16 @@ import Modal from "../../UI/Modal";
 import DayTaskForm from "./DayTaskForm";
 import { useDispatch, useSelector } from "react-redux";
 import { uiActions } from "../../store/ui-slice";
-import {
-  createTask,
-  updateTask,
-  addTaskToUser,
-} from "../../store/task-actions";
+import { updateTask, addTaskToUser } from "../../store/task-actions";
 import { taskActions } from "../../store/task-slice";
-import { retrieveStoredTokendData } from "../../store/auth-actions";
+
 function NewItemWindow() {
   const dispatch = useDispatch();
   const day = useSelector((state) => state.ui.day);
   const title = useSelector((state) => state.ui.title);
   const duration = useSelector((state) => state.ui.duration);
   const uiState = useSelector((state) => state.ui);
+  const userUID = useSelector((state) => state.auth.userUID);
 
   const hideModalHandler = () => {
     dispatch(uiActions.hideNewItemWindow());
@@ -23,7 +20,6 @@ function NewItemWindow() {
 
   const submitHandler = (title, duration) => {
     if (uiState.id.length === 0) {
-      const userUID = dispatch(retrieveStoredTokendData()).userUID;
       console.log(userUID);
       dispatch(addTaskToUser(day, title, duration, userUID));
       dispatch(taskActions.tasksUpdated());

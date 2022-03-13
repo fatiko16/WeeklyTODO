@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { logoutHandler } from "../store/auth-actions";
 function Navigation() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const token = useSelector((state) => state.auth.token);
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -14,17 +15,17 @@ function Navigation() {
     <nav className={classes.navigation}>
       <h1 className={classes.logo}>Weekly TO DO</h1>
       <ol className={classes.links}>
-        {isLoggedIn && (
+        {isLoggedIn && token && (
           <li>
             <Button title={"All Week"} onClick={() => history.push("/week")} />
           </li>
         )}
-        {isLoggedIn && (
+        {isLoggedIn && token && (
           <li>
             <Button title={"TO DO"} onClick={() => history.push("/todo")} />
           </li>
         )}
-        {isLoggedIn && (
+        {isLoggedIn && token && (
           <li>
             <Button
               title={"Logout"}
@@ -32,12 +33,12 @@ function Navigation() {
             />
           </li>
         )}
-        {!isLoggedIn && (
+        {!isLoggedIn && !token && (
           <li>
             <Button title={"Sign in"} onClick={() => history.push("/signin")} />
           </li>
         )}
-        {!isLoggedIn && (
+        {!isLoggedIn && !token && (
           <li>
             <Button
               title={"Create New Account"}

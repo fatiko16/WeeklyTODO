@@ -5,17 +5,20 @@ import {
   getDocs,
   doc,
   deleteDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { todoActions } from "./todo-slice";
 const todoCollectionRef = collection(db, "todos");
 const todoTitleCollectionRef = collection(db, "titles");
 
-export const createTodo = (title, description) => {
+export const createTodo = (title, description, userUID) => {
   return async () => {
     try {
       await addDoc(todoCollectionRef, {
         title: title,
         description: description,
+        userUID: userUID,
       });
     } catch (error) {
       console.log(error);
@@ -24,10 +27,11 @@ export const createTodo = (title, description) => {
   };
 };
 
-export const fetchTodos = () => {
+export const fetchTodos = (userUID) => {
   return async (dispatch) => {
     try {
-      const data = await getDocs(todoCollectionRef);
+      const q = query(todoCollectionRef, where("userUID", "==", userUID));
+      const data = await getDocs(q);
       const todos = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       dispatch(todoActions.replaceTodos(todos));
     } catch (error) {
@@ -74,10 +78,11 @@ export const deleteTodoList = (id) => {
   };
 };
 
-export const fetchTitles = () => {
+export const fetchTitles = (userUID) => {
   return async (dispatch) => {
     try {
-      const data = await getDocs(todoTitleCollectionRef);
+      const q = query(todoTitleCollectionRef, where("userUID", "==", userUID));
+      const data = await getDocs(q);
       const todoTitles = data.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,

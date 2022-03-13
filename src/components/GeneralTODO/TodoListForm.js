@@ -6,9 +6,11 @@ import { useDispatch } from "react-redux";
 import { todoActions } from "../../store/todo-slice";
 import useValidate from "../hooks/useValidate";
 import { validateByLength } from "../../utilities/ValidationMethods";
+import { useSelector } from "react-redux";
 
 function TodoListForm(props) {
   const dispatch = useDispatch();
+  const userUID = useSelector((state) => state.auth.useruID);
   const {
     value: firstTodoValue,
     isValueTouched: isFirstTodoTouched,
@@ -32,7 +34,7 @@ function TodoListForm(props) {
   const submitHandler = (event) => {
     event.preventDefault();
     dispatch(addTodoList(titleValue));
-    dispatch(createTodo(titleValue, firstTodoValue));
+    dispatch(createTodo(titleValue, firstTodoValue, userUID));
     dispatch(todoActions.todosUpdated());
     props.onClose();
   };
