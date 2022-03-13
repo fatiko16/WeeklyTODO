@@ -16,9 +16,9 @@ function Week(props) {
   const dispatch = useDispatch();
   return (
     <React.Fragment>
-      <button onClick={() => dispatch(refreshAuth())}>
+      {/* <button onClick={() => dispatch(refreshAuth())}>
         Click me to get token refreshed
-      </button>
+      </button> */}
       <div className={classes.week}>
         {props.tasks &&
           days.map((day) => {

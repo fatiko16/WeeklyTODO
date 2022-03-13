@@ -13,19 +13,19 @@ const getExpiringTime = (expirationTime) => {
 };
 
 export let logoutTimer;
-export const updateTimer = (time) => {
-  return (dispatch) => {
-    const remainingTime = getExpiringTime(time);
-    console.log(remainingTime);
-    console.log(remainingTime / 60000, "In Minutes");
-    logoutTimer = setTimeout(() => dispatch(logoutHandler()), remainingTime);
-  };
-};
+// export const updateTimer = (time) => {
+//   return (dispatch) => {
+//     const remainingTime = getExpiringTime(time);
+//     console.log(remainingTime);
+//     console.log(remainingTime / 60000, "In Minutes");
+//     logoutTimer = setTimeout(() => dispatch(logoutHandler()), remainingTime);
+//   };
+// };
 
 export const logoutHandler = () => {
   return async (dispatch) => {
+    await signOut(auth);
     if (logoutTimer) {
-      await signOut(auth);
       clearTimeout(logoutTimer);
     }
     dispatch(authActions.logout());
@@ -35,7 +35,7 @@ export const logoutHandler = () => {
 
 const userSignInSignUpHelper = (expiringTime, userUID, token, dispatch) => {
   const remainingTime = getExpiringTime(expiringTime);
-  logoutTimer = setTimeout(() => dispatch(logoutHandler()), remainingTime);
+  // logoutTimer = setTimeout(() => dispatch(logoutHandler()), remainingTime);
   dispatch(authActions.login({ token, userUID }));
   dispatch(authActions.clearError());
 };

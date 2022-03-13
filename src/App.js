@@ -35,7 +35,7 @@ function App() {
         const userUID = user.uid;
         const expirationTime = user.stsTokenManager.expirationTime;
         dispatch(authActions.login({ token, userUID }));
-        dispatch(updateTimer(expirationTime));
+        // dispatch(updateTimer(expirationTime));
       }
     });
     return unsubscribe;
