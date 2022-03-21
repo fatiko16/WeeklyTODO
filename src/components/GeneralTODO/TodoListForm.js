@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 
 function TodoListForm(props) {
   const dispatch = useDispatch();
-  const userUID = useSelector((state) => state.auth.useruID);
+  const userUID = useSelector((state) => state.auth.userUID);
   const {
     value: firstTodoValue,
     isValueTouched: isFirstTodoTouched,
@@ -30,10 +30,9 @@ function TodoListForm(props) {
   const firstTodoClasses = isInvalidFirstToDoEntered ? "invalid" : "";
 
   const isFormValid = isTitleValid && isFirstTodoValid;
-
   const submitHandler = (event) => {
     event.preventDefault();
-    dispatch(addTodoList(titleValue));
+    dispatch(addTodoList(titleValue, userUID));
     dispatch(createTodo(titleValue, firstTodoValue, userUID));
     dispatch(todoActions.todosUpdated());
     props.onClose();

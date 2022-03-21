@@ -8,6 +8,8 @@ import {
   updateDoc,
   query,
   where,
+  Timestamp,
+  orderBy,
 } from "firebase/firestore";
 import { taskActions } from "./task-slice";
 const tasksCollectionRef = collection(db, "tasks");
@@ -53,6 +55,7 @@ export const addTaskToUser = (day, title, duration, userUID) => {
         duration: duration,
         isDone: false,
         userUID: userUID,
+        created: Timestamp.now().seconds,
       });
     } catch (error) {
       console.log(error);
@@ -64,9 +67,12 @@ export const addTaskToUser = (day, title, duration, userUID) => {
 export const getUserData = (userUID) => {
   return async (dispatch) => {
     try {
-      console.log(userUID);
       if (userUID) {
-        const q = query(tasksCollectionRef, where("userUID", "==", userUID));
+        const q = query(
+          tasksCollectionRef,
+          where("userUID", "==", userUID),
+          orderBy("created")
+        );
         const userTasksData = await getDocs(q);
         const userTasks = userTasksData.docs.map((doc) => ({
           ...doc.data(),

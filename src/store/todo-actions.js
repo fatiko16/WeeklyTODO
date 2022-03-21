@@ -7,6 +7,8 @@ import {
   deleteDoc,
   query,
   where,
+  orderBy,
+  Timestamp,
 } from "firebase/firestore";
 import { todoActions } from "./todo-slice";
 const todoCollectionRef = collection(db, "todos");
@@ -19,6 +21,7 @@ export const createTodo = (title, description, userUID) => {
         title: title,
         description: description,
         userUID: userUID,
+        created: Timestamp.now().seconds,
       });
     } catch (error) {
       console.log(error);
@@ -30,7 +33,11 @@ export const createTodo = (title, description, userUID) => {
 export const fetchTodos = (userUID) => {
   return async (dispatch) => {
     try {
-      const q = query(todoCollectionRef, where("userUID", "==", userUID));
+      const q = query(
+        todoCollectionRef,
+        where("userUID", "==", userUID),
+        orderBy("created")
+      );
       const data = await getDocs(q);
       const todos = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
       dispatch(todoActions.replaceTodos(todos));
@@ -53,11 +60,13 @@ export const deleteTodo = (id) => {
   };
 };
 
-export const addTodoList = (title) => {
+export const addTodoList = (title, userUID) => {
   return async () => {
     try {
       await addDoc(todoTitleCollectionRef, {
         title: title,
+        userUID: userUID,
+        created: Timestamp.now().seconds,
       });
     } catch (error) {
       console.log(error);
@@ -81,7 +90,11 @@ export const deleteTodoList = (id) => {
 export const fetchTitles = (userUID) => {
   return async (dispatch) => {
     try {
-      const q = query(todoTitleCollectionRef, where("userUID", "==", userUID));
+      const q = query(
+        todoTitleCollectionRef,
+        where("userUID", "==", userUID),
+        orderBy("created")
+      );
       const data = await getDocs(q);
       const todoTitles = data.docs.map((doc) => ({
         ...doc.data(),

@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./Navigation.module.css";
 import Button from "../UI/Button";
-import { useHistory } from "react-router-dom";
+import { useHistory, NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { logoutHandler } from "../store/auth-actions";
@@ -17,12 +17,16 @@ function Navigation() {
       <ol className={classes.links}>
         {isLoggedIn && token && (
           <li>
-            <Button title={"All Week"} onClick={() => history.push("/week")} />
+            <NavLink to="/week" className={classes.NavLink}>
+              All Week
+            </NavLink>
           </li>
         )}
         {isLoggedIn && token && (
           <li>
-            <Button title={"TO DO"} onClick={() => history.push("/todo")} />
+            <NavLink to="/todo" className={classes.NavLink}>
+              TO DO
+            </NavLink>
           </li>
         )}
         {isLoggedIn && token && (

@@ -2,6 +2,7 @@ import "firebase/auth";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "@firebase/firestore";
+// In order to redeploy firebase hosting:disable then firebase deploy go with this for now later learn more about deployment
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

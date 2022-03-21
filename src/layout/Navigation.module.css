@@ -28,3 +28,14 @@
 .links li:hover {
   color: azure;
 }
+
+.NavLink {
+  text-decoration: none;
+  color: var(--main-header-color);
+  transition: color;
+  transition-duration: 500ms;
+}
+
+.NavLink:hover {
+  color: var(--button-color);
+}
