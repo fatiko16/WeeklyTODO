@@ -10,6 +10,7 @@ import { fetchTodos } from "../../store/todo-actions";
 import { fetchTitles } from "../../store/todo-actions";
 import { useSelector } from "react-redux";
 import { todoActions } from "../../store/todo-slice";
+import LoadingSpinner from "../../UI/LoadingSpinner";
 
 //CONTINUE RENDERING ALL LISTS
 function AllTodos() {
@@ -19,9 +20,7 @@ function AllTodos() {
   const allTitles = useSelector((state) => state.todo.allTitles);
   const updated = useSelector((state) => state.todo.updated);
   const userUID = useSelector((state) => state.auth.userUID);
-  console.log(allTitles);
-  console.log(allTodos);
-
+  const loading = useSelector((state) => state.ui.loading);
   useEffect(() => {
     dispatch(fetchTodos(userUID));
     dispatch(fetchTitles(userUID));
@@ -35,28 +34,31 @@ function AllTodos() {
       <Route path="/todo/add-todo">
         <AddTodoTask />
       </Route>
-      <div className={classes.all__lists}>
-        {allTitles &&
-          allTitles.length > 0 &&
-          allTitles.map((titleDoc) => {
-            const titleTodos = allTodos.filter(
-              (todo) => todo.title === titleDoc.title
-            );
-            return (
-              <TodoList
-                title={titleDoc.title}
-                titleTodos={titleTodos}
-                key={titleDoc.title}
-                id={titleDoc.id}
-              />
-            );
-          })}
-        <Button
-          title={"Create New List"}
-          onClick={() => history.push("/todo/add-list")}
-          className={classes.btn}
-        />
-      </div>
+      {loading && <LoadingSpinner />}
+      {!loading && (
+        <div className={classes.all__lists}>
+          {allTitles &&
+            allTitles.length > 0 &&
+            allTitles.map((titleDoc) => {
+              const titleTodos = allTodos.filter(
+                (todo) => todo.title === titleDoc.title
+              );
+              return (
+                <TodoList
+                  title={titleDoc.title}
+                  titleTodos={titleTodos}
+                  key={titleDoc.title}
+                  id={titleDoc.id}
+                />
+              );
+            })}
+          <Button
+            title={"Create New List"}
+            onClick={() => history.push("/todo/add-list")}
+            className={classes.btn}
+          />
+        </div>
+      )}
     </React.Fragment>
   );
 }

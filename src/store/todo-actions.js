@@ -11,6 +11,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { todoActions } from "./todo-slice";
+import { uiActions } from "./ui-slice";
 const todoCollectionRef = collection(db, "todos");
 const todoTitleCollectionRef = collection(db, "titles");
 
@@ -33,6 +34,7 @@ export const createTodo = (title, description, userUID) => {
 export const fetchTodos = (userUID) => {
   return async (dispatch) => {
     try {
+      dispatch(uiActions.startedLoading());
       const q = query(
         todoCollectionRef,
         where("userUID", "==", userUID),
@@ -43,6 +45,8 @@ export const fetchTodos = (userUID) => {
       dispatch(todoActions.replaceTodos(todos));
     } catch (error) {
       console.log("Something went wrong while getting your todos.");
+    } finally {
+      dispatch(uiActions.finishedLoading());
     }
   };
 };
@@ -90,6 +94,7 @@ export const deleteTodoList = (id) => {
 export const fetchTitles = (userUID) => {
   return async (dispatch) => {
     try {
+      dispatch(uiActions.startedLoading());
       const q = query(
         todoTitleCollectionRef,
         where("userUID", "==", userUID),
@@ -104,6 +109,8 @@ export const fetchTitles = (userUID) => {
     } catch (error) {
       console.log(error);
       console.log("Something went wrong while fetching to do list titles");
+    } finally {
+      dispatch(uiActions.finishedLoading());
     }
   };
 };

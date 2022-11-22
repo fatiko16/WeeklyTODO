@@ -10,17 +10,15 @@ import SignUp from "./components/Pages/SignUp";
 import Login from "./components/Pages/Login";
 import GeneralTODO from "./components/Pages/GeneralTODO";
 import HomePage from "./components/Pages/HomePage";
-import { updateTimer } from "./store/auth-actions";
 import { authActions } from "./store/auth-slice";
 import { auth } from "./firebase-config";
-
+import LoadingSpinner from "./UI/LoadingSpinner";
 const Week = React.lazy(() => import("./components/Week/Week"));
 function App() {
   const dispatch = useDispatch();
   const isNewItemWindowShown = useSelector(
     (state) => state.ui.isNewItemWindowShown
   );
-
   const tasks = useSelector((state) => state.task.tasks);
   const changed = useSelector((state) => state.task.changed);
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -33,9 +31,7 @@ function App() {
       if (user) {
         const token = user.stsTokenManager.accessToken;
         const userUID = user.uid;
-        const expirationTime = user.stsTokenManager.expirationTime;
         dispatch(authActions.login({ token, userUID }));
-        // dispatch(updateTimer(expirationTime));
       }
     });
     return unsubscribe;
@@ -48,7 +44,7 @@ function App() {
   return (
     <Layout>
       {!isLoading && (
-        <Suspense fallback={<p>Loading...</p>}>
+        <Suspense fallback={<LoadingSpinner />}>
           {isNewItemWindowShown && <NewItemWindow />}
           <Switch>
             <Route path="/" exact>

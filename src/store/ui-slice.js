@@ -9,6 +9,7 @@ const uiSlice = createSlice({
     duration: 0,
     isNewItemWindowShown: false,
     isDayView: false,
+    loading: false,
   },
   reducers: {
     showNewItemWindow(state, action) {
@@ -34,6 +35,12 @@ const uiSlice = createSlice({
       state.duration = action.payload.duration;
       state.id = action.payload.id;
       state.isNewItemWindowShown = true;
+    },
+    finishedLoading(state) {
+      state.loading = false;
+    },
+    startedLoading(state) {
+      state.loading = true;
     },
   },
 });

@@ -12,6 +12,7 @@ import {
   orderBy,
 } from "firebase/firestore";
 import { taskActions } from "./task-slice";
+import { uiActions } from "./ui-slice";
 const tasksCollectionRef = collection(db, "tasks");
 
 //-----------------------------------------------------EVERYTHING ON USER----------------------------------------
@@ -67,6 +68,7 @@ export const addTaskToUser = (day, title, duration, userUID) => {
 export const getUserData = (userUID) => {
   return async (dispatch) => {
     try {
+      dispatch(uiActions.startedLoading());
       if (userUID) {
         const q = query(
           tasksCollectionRef,
@@ -83,6 +85,8 @@ export const getUserData = (userUID) => {
     } catch (error) {
       console.log(error);
       console.log("Encountered error while pulling user data");
+    } finally {
+      dispatch(uiActions.finishedLoading());
     }
   };
 };
