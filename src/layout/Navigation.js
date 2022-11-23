@@ -10,6 +10,7 @@ function Navigation() {
   const token = useSelector((state) => state.auth.token);
   const history = useHistory();
   const dispatch = useDispatch();
+  console.log(isLoggedIn);
 
   return (
     <nav className={classes.navigation}>
